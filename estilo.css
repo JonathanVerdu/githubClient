@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+html, body{
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+}
+
+#logo{
+	background: url(img/logo.jpg) no-repeat center;
+	background-size:cover;
+	height: 500px;
+   	width: 100% ;
+   	text-align: center;
+}
