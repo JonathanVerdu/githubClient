@@ -71,12 +71,14 @@
                   $habilidad_facil_3 = $fila['habilidad_facil_3'];
                   $habilidad_facil_4 = $fila['habilidad_facil_4'];
                   $habilidad_facil_5 = $fila['habilidad_facil_5'];
+                  $habilidad_facil_6 = $fila['habilidad_facil_6'];
 
                   $habilidad_media_1 = $fila['habilidad_media_1'];
                   $habilidad_media_2 = $fila['habilidad_media_2'];
                   $habilidad_media_3 = $fila['habilidad_media_3'];
                   $habilidad_media_4 = $fila['habilidad_media_4'];
                   $habilidad_media_5 = $fila['habilidad_media_5'];
+                  $habilidad_media_6 = $fila['habilidad_media_6'];
 
                   $ventaja_1 = $fila['ventaja_1'];
                   $ventaja_2 = $fila['ventaja_2'];
@@ -168,6 +170,7 @@
                     if (isset($habilidad_facil_3)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_3' target='_blank'>$habilidad_facil_3</a>";
                     if (isset($habilidad_facil_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_4' target='_blank'>$habilidad_facil_4</a>";
                     if (isset($habilidad_facil_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_5' target='_blank'>$habilidad_facil_5</a>";
+                    if (isset($habilidad_facil_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_facil_6' target='_blank'>$habilidad_facil_6</a>";
                   ?>
                   <br />
                   <span class='apartado_bd'>MEDIO: </span>
@@ -177,6 +180,7 @@
                     if (isset($habilidad_media_3)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_3' target='_blank'>$habilidad_media_3</a>";
                     if (isset($habilidad_media_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_4' target='_blank'>$habilidad_media_4</a>";
                     if (isset($habilidad_media_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_5' target='_blank'>$habilidad_media_5</a>";
+                    if (isset($habilidad_media_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre=$habilidad_media_6' target='_blank'>$habilidad_media_6</a>";
                   ?><br /><br />
                   <!-- Mejoras disponibles -->
                   <h3>Mejoras disponibles </h3>
@@ -222,4 +226,4 @@
    <?php include 'include/footer.php' ?>
   
   </body>
-</html>
+</html>	

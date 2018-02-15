@@ -75,72 +75,111 @@
               $("#ficha_personaje").append('<div id="datos_generales"><span class="letraGrande negrita">'+json.nombre+'</span><br /><span class="letraGrande">'+json.clase+'</span><br /><br /></div>');
 
               // --- Ventana cambiar Atributos ---
-              $("#ficha_personaje").append('<button id="boton_modificar_atributo">Cambiar atributos</button><br /><div id="modificar_atributo" class="borde" style="display:none"><ul><li>FUERZA :  <span id="fu_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="fu"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="fu"></i><span id="fu_totales"> '+json.actualFuerza+' / '+json.maxFuerza+'</span></li><li>DESTREZA: <span id="de_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="de"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="de"></i><span id="de_totales"> '+json.actualDestreza+' / '+json.maxDestreza+'</span></li><li>CARISMA: <span id="ca_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="ca"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true"  name="ca"></i><span id="ca_totales"> '+json.actualCarisma+' / '+json.maxCarisma+'</span></li><li>INTELIGENCIA: <span id="in_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="in"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="in"></i><span id="in_totales"> '+json.actualInteligencia+' / '+json.maxInteligencia+'</span></li></ul></div>');
+              $("#ficha_personaje").append('<button id="boton_modificar_atributo">Cambiar atributos</button><br /><div id="modificar_atributo" class="borde" style="display:none"><ul><li>FUERZA :  <span id="fu_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="fu"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="fu"></i><span id="fu_totales"> '+json.actualFuerza+' / '+json.maxFuerza+'</span></li><li>DESTREZA: <span id="de_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="de"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="de"></i><span id="de_totales"> '+json.actualDestreza+' / '+json.maxDestreza+'</span></li><li>CARISMA: <span id="ca_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="ca"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true"  name="ca"></i><span id="ca_totales"> '+json.actualCarisma+' / '+json.maxCarisma+'</span></li><li>INTELIGENCIA: <span id="in_cambiar">0</span>&nbsp;<i class="fa fa-plus-circle subir" aria-hidden="true" name="in"></i>&nbsp;<i class="fa fa-minus-circle bajar" aria-hidden="true" name="in"></i><span id="in_totales"> '+json.actualInteligencia+' / '+json.maxInteligencia+'</span></li></ul><button id="aceptar_cambios">Aceptar cambios</div>');
 
-              // --- Botón subir atributo, funcionamiento
-              $(".subir").click(function(){
+              // FUNCIONALIDADES DE LA VENTANA DE CAMBIAR ATRIBUTOS ////////////////////////////////////////////////////////
 
-                // Subir el contador del atributo que se va a subir
-                $atributo_seleccionado = $(this).attr("name");
-                if($atributo_seleccionado == "fu") $subida_por_hacer = $("#fu_cambiar").html();
-                if($atributo_seleccionado == "de") $subida_por_hacer = $("#de_cambiar").html();
-                if($atributo_seleccionado == "ca") $subida_por_hacer = $("#ca_cambiar").html();
-                if($atributo_seleccionado == "in") $subida_por_hacer = $("#in_cambiar").html();
-                $subida_por_hacer++;
+                  // --- Botón subir atributo, funcionamiento
+                  $(".subir").click(function(){
+                    // Subir el contador del atributo que se va a subir
+                    $atributo_seleccionado = $(this).attr("name");
+                    if($atributo_seleccionado == "fu") $subida_por_hacer = $("#fu_cambiar").html();
+                    if($atributo_seleccionado == "de") $subida_por_hacer = $("#de_cambiar").html();
+                    if($atributo_seleccionado == "ca") $subida_por_hacer = $("#ca_cambiar").html();
+                    if($atributo_seleccionado == "in") $subida_por_hacer = $("#in_cambiar").html();
+                    $subida_por_hacer++;
+                    // Comprobar si la subida va a superar el máximo de subidas que puedes
+                    if($atributo_seleccionado == "fu"){
+                      $atributo_actual = json.actualFuerza; 
+                      $atributo_maximo = json.maxFuerza;
+                    }
+                    if($atributo_seleccionado == "de"){
+                      $atributo_actual = json.actualDestreza; 
+                      $atributo_maximo = json.maxDestreza;
+                    }
+                    if($atributo_seleccionado == "ca"){
+                      $atributo_actual = json.actualCarisma; 
+                      $atributo_maximo = json.maxCarisma;
+                    }
+                    if($atributo_seleccionado == "in"){
+                      $atributo_actual = json.actualInteligencia; 
+                      $atributo_maximo = json.maxInteligencia;
+                    }
+                    $res_atributos = parseInt($atributo_actual) + parseInt($subida_por_hacer);
+                    if($res_atributos > parseInt($atributo_maximo)){
+                      alert("No puedes subir mas este atributo");
+                    }else{
+                      if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                    }
+                  });
 
-                // Comprobar si la subida va a superar el máximo de subidas que puedes
-                if($atributo_seleccionado == "fu"){
-                  $atributo_actual = json.actualFuerza; 
-                  $atributo_maximo = json.maxFuerza;
-                }
-                if($atributo_seleccionado == "de"){
-                  $atributo_actual = json.actualDestreza; 
-                  $atributo_maximo = json.maxDestreza;
-                }
-                if($atributo_seleccionado == "ca"){
-                  $atributo_actual = json.actualCarisma; 
-                  $atributo_maximo = json.maxCarisma;
-                }
-                if($atributo_seleccionado == "in"){
-                  $atributo_actual = json.actualInteligencia; 
-                  $atributo_maximo = json.maxInteligencia;
-                }
+                  // --- Botón bajar atributo, funcionamiento
+                  $(".bajar").click(function(){
+                    $atributo_seleccionado = $(this).attr("name");
+                    if($atributo_seleccionado == "fu") $subida_por_hacer = parseInt($("#fu_cambiar").html());
+                    if($atributo_seleccionado == "de") $subida_por_hacer = parseInt($("#de_cambiar").html());
+                    if($atributo_seleccionado == "ca") $subida_por_hacer = parseInt($("#ca_cambiar").html());
+                    if($atributo_seleccionado == "in") $subida_por_hacer = parseInt($("#in_cambiar").html());
 
-                $res_atributos = parseInt($atributo_actual) + parseInt($subida_por_hacer);
-                //alert("Vas a subir a "+$res_atributos+" de un total de "+$atributo_maximo);
-                if($res_atributos > parseInt($atributo_maximo)){
-                  alert("No puedes subir mas este atributo");
-                }else{
-                  if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
-                }
+                    if($subida_por_hacer > 0){ 
+                      $subida_por_hacer--;
+                      if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
+                      if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                    }else{ 
+                      alert("No puedes bajar mas de 0");
+                    }
+                  });
 
-              });
+                  // --- Aceptar cambios y pasarlos con AJAX
+                  // !!!!!!!!!!!!!!!!!!!!!! FALTA QUE REQUIERA EXP PARA HACER LOS CAMBIOS !!!!!!!!!!!!!!!!!!!!!!!!
+                  $("#aceptar_cambios").click(function(){
+                      // Recogemos los datos que necesitamos
+                      $personaje = $("#seleccion_personaje").attr("selected",true).val();
+                      $cambio_fu = $("#fu_cambiar").html();
+                      $cambio_de = $("#de_cambiar").html();
+                      $cambio_ca = $("#ca_cambiar").html();
+                      $cambio_in = $("#in_cambiar").html();
+       
+                      // Función ajax de jquery con los datos para pasar /*
+                      $.ajax(
+                      {
+                        data: {"personaje" : $personaje, "cambio_fu" : $cambio_fu, "cambio_de" : $cambio_de, "cambio_ca" : $cambio_ca, "cambio_in" : $cambio_in}, 
+                        type: "POST", 
+                        dataType: "json",
+                        url: "http://los3reinos.freeoda.com/extra/pasar_datos_atributos_a_bd.php" 
+                      })
 
-              // --- Botón bajar atributo, funcionamiento
-              $(".bajar").click(function(){
-                $atributo_seleccionado = $(this).attr("name");
-                if($atributo_seleccionado == "fu") $subida_por_hacer = parseInt($("#fu_cambiar").html());
-                if($atributo_seleccionado == "de") $subida_por_hacer = parseInt($("#de_cambiar").html());
-                if($atributo_seleccionado == "ca") $subida_por_hacer = parseInt($("#ca_cambiar").html());
-                if($atributo_seleccionado == "in") $subida_por_hacer = parseInt($("#in_cambiar").html());
+                      .done(function(json){
+                        // Si no hay error mostrar mensaje de todo hecho con éxito
+                        if(json.error == 0) alert("Cambios aplicados con éxito");
 
-                if($subida_por_hacer > 0){ 
-                  $subida_por_hacer--;
-                  if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
-                  if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
-                }else{ 
-                  alert("No puedes bajar mas de 0");
-                }
+                        // Cambiar los valores para dar el efecto de que se ha hecho el cambio al instante
+                        $("#fu_totales").html(" "+json.fu_actual+" / "+json.fu_max);
+                        $("#de_totales").html(" "+json.de_actual+" / "+json.de_max);
+                        $("#ca_totales").html(" "+json.ca_actual+" / "+json.ca_max);
+                        $("#in_totales").html(" "+json.in_actual+" / "+json.in_max);
+                        $("#atr_fu").html(json.fu_total);
+                        $("#atr_de").html(json.de_total);
+                        $("#atr_ca").html(json.ca_total);
+                        $("#atr_in").html(json.in_total);
 
-              });
+                        // Poner los contadores de subir atributo a 0
+                        $("#fu_cambiar").html("0");
+                        $("#de_cambiar").html("0");
+                        $("#ca_cambiar").html("0");
+                        $("#in_cambiar").html("0");
+                      });
+                });
+
+              ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
               // --- Los Atributos ----
-              $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita">'+json.inteligencia+'</span></span></div><br />');
+              $("#ficha_personaje").append('<div id="atributos"><span class="negrita letraGrande margenDerechoPeque">FU: <span class="sinNegrita" id="atr_fu">'+json.fuerza+'</span></span><span class="negrita letraGrande margenDerechoPeque">DE:<span class="sinNegrita" id="atr_de">'+json.destreza+'</span></span><span class="negrita letraGrande margenDerechoPeque">CA:<span class="sinNegrita" id="atr_ca">'+json.carisma+'</span></span><span class="negrita letraGrande">IN:<span class="sinNegrita" id="atr_in">'+json.inteligencia+'</span></span></div><br />');
 
               // --- Los Datos Personales ---
               $("#ficha_personaje").append('<div id="datos_personales" class="bordeRedondeado"><ul><li>Raza: '+json.raza+'</li><li>Sexo: '+json.sexo+'</li><li>Edad: '+json.edad+'</li><li>Altura: '+json.altura+'</li><li>Peso: '+json.peso+'</li></ul></div><br />'); 
