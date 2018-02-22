@@ -4,6 +4,7 @@
 	
 	// Recogemos datos del ajax de gestion_personajes.php
 	$personaje = $_POST["personaje"];
+	$exp = $_POST["exp"];
 	$cambio_fu = $_POST["cambio_fu"];
 	$cambio_de = $_POST["cambio_de"];
 	$cambio_ca = $_POST["cambio_ca"];
@@ -102,6 +103,10 @@
 		$sql = "UPDATE personajes SET inteligencia = '$in_total' WHERE nombre = '$personaje';";
 		$conexion->query($sql);
 	}else $error = "in";
+
+	// Aplicamos el cambio de la EXP a la table de "personajes";
+	$sql = "UPDATE personajes SET exp = '$exp' WHERE nombre = '$personaje';";
+	$conexion->query($sql);
 
 
 	// Preparamos variable para enviar nuevos datos por json

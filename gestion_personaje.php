@@ -87,32 +87,39 @@
                     if($atributo_seleccionado == "de") $subida_por_hacer = $("#de_cambiar").html();
                     if($atributo_seleccionado == "ca") $subida_por_hacer = $("#ca_cambiar").html();
                     if($atributo_seleccionado == "in") $subida_por_hacer = $("#in_cambiar").html();
-                    $subida_por_hacer++;
-                    // Comprobar si la subida va a superar el máximo de subidas que puedes
-                    if($atributo_seleccionado == "fu"){
-                      $atributo_actual = json.actualFuerza; 
-                      $atributo_maximo = json.maxFuerza;
-                    }
-                    if($atributo_seleccionado == "de"){
-                      $atributo_actual = json.actualDestreza; 
-                      $atributo_maximo = json.maxDestreza;
-                    }
-                    if($atributo_seleccionado == "ca"){
-                      $atributo_actual = json.actualCarisma; 
-                      $atributo_maximo = json.maxCarisma;
-                    }
-                    if($atributo_seleccionado == "in"){
-                      $atributo_actual = json.actualInteligencia; 
-                      $atributo_maximo = json.maxInteligencia;
-                    }
-                    $res_atributos = parseInt($atributo_actual) + parseInt($subida_por_hacer);
-                    if($res_atributos > parseInt($atributo_maximo)){
-                      alert("No puedes subir mas este atributo");
+                    // Comprobar si se puede pagar con EXP la subida
+                    $exp = $("#exp").html() - 3;
+                    if($exp >= 0){
+                      $subida_por_hacer++;
+                      // Comprobar si la subida va a superar el máximo de subidas que puedes
+                      if($atributo_seleccionado == "fu"){
+                        $atributo_actual = json.actualFuerza; 
+                        $atributo_maximo = json.maxFuerza;
+                      }
+                      if($atributo_seleccionado == "de"){
+                        $atributo_actual = json.actualDestreza; 
+                        $atributo_maximo = json.maxDestreza;
+                      }
+                      if($atributo_seleccionado == "ca"){
+                        $atributo_actual = json.actualCarisma; 
+                        $atributo_maximo = json.maxCarisma;
+                      }
+                      if($atributo_seleccionado == "in"){
+                        $atributo_actual = json.actualInteligencia; 
+                        $atributo_maximo = json.maxInteligencia;
+                      }
+                      $res_atributos = parseInt($atributo_actual) + parseInt($subida_por_hacer);
+                      if($res_atributos > parseInt($atributo_maximo)){
+                        alert("No puedes subir mas este atributo");
+                      }else{
+                        if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
+                        if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                        $("#exp").html($exp);
+                      }
                     }else{
-                      if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
-                      if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
-                      if($atributo_seleccionado == "ca") $("#ca_cambiar").html($subida_por_hacer);
-                      if($atributo_seleccionado == "in") $("#in_cambiar").html($subida_por_hacer);
+                      alert("No tienes suficiente exp para subir un atributo (necesitas 3 puntos de EXP para ello)");
                     }
                   });
 
@@ -124,7 +131,9 @@
                     if($atributo_seleccionado == "ca") $subida_por_hacer = parseInt($("#ca_cambiar").html());
                     if($atributo_seleccionado == "in") $subida_por_hacer = parseInt($("#in_cambiar").html());
 
-                    if($subida_por_hacer > 0){ 
+                    if($subida_por_hacer > 0){
+                      $exp = parseInt($("#exp").html()) + 3; 
+                      $("#exp").html($exp);
                       $subida_por_hacer--;
                       if($atributo_seleccionado == "fu") $("#fu_cambiar").html($subida_por_hacer);
                       if($atributo_seleccionado == "de") $("#de_cambiar").html($subida_por_hacer);
@@ -136,19 +145,21 @@
                   });
 
                   // --- Aceptar cambios y pasarlos con AJAX
-                  // !!!!!!!!!!!!!!!!!!!!!! FALTA QUE REQUIERA EXP PARA HACER LOS CAMBIOS !!!!!!!!!!!!!!!!!!!!!!!!
                   $("#aceptar_cambios").click(function(){
+                    // Preguntar si queremos aplicar los cambios
+                    if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardados")){
                       // Recogemos los datos que necesitamos
                       $personaje = $("#seleccion_personaje").attr("selected",true).val();
                       $cambio_fu = $("#fu_cambiar").html();
                       $cambio_de = $("#de_cambiar").html();
                       $cambio_ca = $("#ca_cambiar").html();
                       $cambio_in = $("#in_cambiar").html();
+                      $exp = parseInt($("#exp").html());
        
                       // Función ajax de jquery con los datos para pasar /*
                       $.ajax(
                       {
-                        data: {"personaje" : $personaje, "cambio_fu" : $cambio_fu, "cambio_de" : $cambio_de, "cambio_ca" : $cambio_ca, "cambio_in" : $cambio_in}, 
+                        data: {"personaje" : $personaje, "exp" : $exp, "cambio_fu" : $cambio_fu, "cambio_de" : $cambio_de, "cambio_ca" : $cambio_ca, "cambio_in" : $cambio_in}, 
                         type: "POST", 
                         dataType: "json",
                         url: "http://los3reinos.freeoda.com/extra/pasar_datos_atributos_a_bd.php" 
@@ -174,6 +185,7 @@
                         $("#ca_cambiar").html("0");
                         $("#in_cambiar").html("0");
                       });
+                    }
                 });
 
               ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -197,9 +209,63 @@
               if(json.habilidad_nombre != undefined && json.habilidad_nombre != ""){
                 $("#ficha_personaje").append('<h3><i class="fa fa-bars" id="boton_habilidad" aria-hidden="true"></i> Habilidades</h3><ul>');
                 for(var i=0; i<json.habilidad_nombre.length; i++){
-                  $("#ficha_personaje").append('<li class="negrita habilidad"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: '+json.habilidad_bono[i]+'</li>'); 
+                  $tipo_coste = 3;
+                  // Comprobamos si la habilidad es fácil
+                  if(json.habilidad_facil_1 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_2 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_3 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_4 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_5 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  if(json.habilidad_facil_6 == json.habilidad_nombre[i]) $tipo_coste = 1;
+                  // Comprobamos si la habilidad es media
+                  if(json.habilidad_media_1 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_2 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_3 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_4 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_5 == json.habilidad_nombre[i]) $tipo_coste = 2;
+                  if(json.habilidad_media_6 == json.habilidad_nombre[i]) $tipo_coste = 2;
+
+                  if(json.habilidad_bono[i] != 0){
+                    $("#ficha_personaje").append('<li class="negrita habilidad"><a href="extra/mostrar_ventana_busqueda.php?tabla=habilidades&nombre='+json.habilidad_nombre[i]+'" target="_blank">'+json.habilidad_nombre[i]+'</a>: <span id="'+json.habilidad_nombre[i]+'">'+json.habilidad_bono[i]+'</span>&nbsp;&nbsp;Coste EXP: '+$tipo_coste+'&nbsp;&nbsp;<i class="fa fa-plus-circle subir_habilidad" aria-hidden="true" id="h'+json.habilidad_nombre[i]+'" name="'+$tipo_coste+'"></i></li>');
+                  } 
                 }
                 $("#ficha_personaje").append('</ul><br />');
+
+                // FUNCIONALIDADES DE LA VENTANA DE CAMBIAR ATRIBUTOS /////////////////////////////////////////////////
+
+                $(".subir_habilidad").click(function(){
+
+                	 $exp = parseInt($("#exp").html());
+                	 $coste = parseInt($(this).attr("name"));
+                	 if($exp - $coste >= 0){
+                	 	if(confirm("¿Quieres aplicar los cambios?, una vez aceptado los puntos de EXP y los cambios realizados se quedarán guardados")){
+                	 		// Parte visual automática ///////////////////////////////////////////////////
+
+                	 		// Convertir el nombre del id del botón al nombre del id de la habilidad
+                	 		$id_sin_cambiar = $(this).attr("id");
+                	 		$id_correcto = '#'+$id_sin_cambiar.substr(1);
+                	 		$bono_actual = $($id_correcto).html();
+                	 		$bono_correcto = parseInt($bono_actual) + 1;
+                	 		$($id_correcto).html($bono_correcto);
+                	 		
+                	 		// Restar la exp y cambiarla a el resultado correcto
+                	 		$("#exp").html(parseInt($exp) - $coste);
+
+                	 		/////////////////////////////////////////////////////////////////////////////
+
+                	 		// Parte de BD //////////////////////////////////////////////////////////////
+
+                	 		// !!!!!!!!!!!!!  POR HACEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! //
+
+                	 		/////////////////////////////////////////////////////////////////////////////
+                	 	}
+                	 }else{
+                	 	alert("No tienes puntos de experiencia para subir esta habilidad");
+                	 }
+
+                });
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
               }
 
               // --- Las Ventajas ---

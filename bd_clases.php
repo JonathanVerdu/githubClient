@@ -93,6 +93,10 @@
                   $tecnica_4 = $fila['tecnica_4'];
                   $tecnica_5 = $fila['tecnica_5'];
                   $tecnica_6 = $fila['tecnica_6'];
+                  $tecnica_7 = $fila['tecnica_7'];
+                  $tecnica_8 = $fila['tecnica_8'];
+                  $tecnica_9 = $fila['tecnica_9'];
+                  $tecnica_10 = $fila['tecnica_10'];
 
                   $subir_fu = $fila['subir_fu'];
                   $subir_de = $fila['subir_de'];
@@ -201,6 +205,10 @@
                     if (isset($tecnica_4)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_4' target='_blank'>$tecnica_4</a>";
                     if (isset($tecnica_5)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_5' target='_blank'>$tecnica_5</a>";
                     if (isset($tecnica_6)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_6' target='_blank'>$tecnica_6</a>";
+                    if (isset($tecnica_7)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_7' target='_blank'>$tecnica_7</a>";
+                    if (isset($tecnica_8)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_8' target='_blank'>$tecnica_8</a>";
+                    if (isset($tecnica_9)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_9' target='_blank'>$tecnica_9</a>";
+                    if (isset($tecnica_10)) echo ", <a href='extra/mostrar_ventana_busqueda.php?tabla=tecnicas&nombre=$tecnica_10' target='_blank'>$tecnica_10</a>";
                   ?><br /><br />
                   <h3>Especiales de clase </h3>
                   <!-- Cláseas -->
@@ -226,4 +234,4 @@
    <?php include 'include/footer.php' ?>
   
   </body>
-</html>	
+</html>			
